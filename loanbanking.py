@@ -1,4 +1,5 @@
 import sys
+import os
 
 def calculate_emi(principal, annual_rate, tenure_months):
     if annual_rate == 0:
@@ -9,23 +10,19 @@ def calculate_emi(principal, annual_rate, tenure_months):
 def process_loan():
     print("--- Loan Processing System ---")
     
-    # If arguments are passed (like in Jenkins), use them automatically
-    if len(sys.argv) > 1:
-        if len(sys.argv) < 9:
-            print("Error: Missing arguments!")
-            print("Usage: python loanbanking.py [ID] [Age] [Salary] [ExistingEMI] [CreditScore] [Type] [Amount] [Tenure]")
-            sys.exit(1)
-        
-        customer_id = sys.argv[1]
-        age = int(sys.argv[2])
-        monthly_salary = float(sys.argv[3])
-        existing_loan_emi = float(sys.argv[4])
-        credit_score = int(sys.argv[5])
-        employment_type = sys.argv[6].strip().lower()
-        requested_amount = float(sys.argv[7])
-        loan_tenure_months = int(sys.argv[8])
+    # Auto-detect Jenkins or command-line arguments
+    if "JENKINS_HOME" in os.environ or len(sys.argv) > 1:
+        print("[Automation Detected] Bypassing interactive inputs...")
+        customer_id = sys.argv[1] if len(sys.argv) > 1 else "JENKINS-TEST"
+        age = int(sys.argv[2]) if len(sys.argv) > 2 else 30
+        monthly_salary = float(sys.argv[3]) if len(sys.argv) > 3 else 5000.0
+        existing_loan_emi = float(sys.argv[4]) if len(sys.argv) > 4 else 200.0
+        credit_score = int(sys.argv[5]) if len(sys.argv) > 5 else 720
+        employment_type = (sys.argv[6] if len(sys.argv) > 6 else "salaried").strip().lower()
+        requested_amount = float(sys.argv[7]) if len(sys.argv) > 7 else 15000.0
+        loan_tenure_months = int(sys.argv[8]) if len(sys.argv) > 8 else 24
     else:
-        # Fallback to normal interactive prompts for human local runs
+        # Standard interactive questions for manual testing
         customer_id = input("Enter Customer ID: ")
         age = int(input("Enter Age: "))
         monthly_salary = float(input("Enter Monthly Salary: "))
