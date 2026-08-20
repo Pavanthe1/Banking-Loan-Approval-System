@@ -1,21 +1,39 @@
+import sys
+
 def calculate_emi(principal, annual_rate, tenure_months):
     if annual_rate == 0:
         return principal / tenure_months
     monthly_rate = (annual_rate / 12) / 100
-    emi = principal * monthly_rate * ((1 + monthly_rate) ** tenure_months) / (((1 + monthly_rate) ** tenure_months) - 1)
-    return emi
+    return principal * monthly_rate * ((1 + monthly_rate) ** tenure_months) / (((1 + monthly_rate) ** tenure_months) - 1)
 
 def process_loan():
     print("--- Loan Processing System ---")
     
-    customer_id = input("Enter Customer ID: ")
-    age = int(input("Enter Age: "))
-    monthly_salary = float(input("Enter Monthly Salary: "))
-    existing_loan_emi = float(input("Enter Total Existing Loan EMI/Payments: "))
-    credit_score = int(input("Enter Credit Score: "))
-    employment_type = input("Enter Employment Type (Salaried/Self-Employed): ").strip().lower()
-    requested_amount = float(input("Enter Requested Loan Amount: "))
-    loan_tenure_months = int(input("Enter Loan Tenure (in months): "))
+    # Check if arguments are provided via command line (CLI)
+    if len(sys.argv) > 1:
+        if len(sys.argv) < 9:
+            print("Error: Missing required arguments.")
+            print("Usage: python loanbanking.py [CustomerID] [Age] [Salary] [ExistingEMI] [CreditScore] [EmploymentType] [Amount] [Tenure]")
+            sys.exit(1)
+        
+        customer_id = sys.argv[1]
+        age = int(sys.argv[2])
+        monthly_salary = float(sys.argv[3])
+        existing_loan_emi = float(sys.argv[4])
+        credit_score = int(sys.argv[5])
+        employment_type = sys.argv[6].strip().lower()
+        requested_amount = float(sys.argv[7])
+        loan_tenure_months = int(sys.argv[8])
+    else:
+        # Fallback to interactive mode if run locally by a human
+        customer_id = input("Enter Customer ID: ")
+        age = int(input("Enter Age: "))
+        monthly_salary = float(input("Enter Monthly Salary: "))
+        existing_loan_emi = float(input("Enter Total Existing Loan EMI/Payments: "))
+        credit_score = int(input("Enter Credit Score: "))
+        employment_type = input("Enter Employment Type (Salaried/Self-Employed): ").strip().lower()
+        requested_amount = float(input("Enter Requested Loan Amount: "))
+        loan_tenure_months = int(input("Enter Loan Tenure (in months): "))
 
     rejection_reasons = []
     
@@ -78,3 +96,5 @@ def process_loan():
 
 if __name__ == "__main__":
     process_loan()
+
+
