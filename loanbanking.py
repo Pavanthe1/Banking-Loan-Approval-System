@@ -9,11 +9,11 @@ def calculate_emi(principal, annual_rate, tenure_months):
 def process_loan():
     print("--- Loan Processing System ---")
     
-    # Check if arguments are provided via command line (CLI)
+    # If arguments are passed (like in Jenkins), use them automatically
     if len(sys.argv) > 1:
         if len(sys.argv) < 9:
-            print("Error: Missing required arguments.")
-            print("Usage: python loanbanking.py [CustomerID] [Age] [Salary] [ExistingEMI] [CreditScore] [EmploymentType] [Amount] [Tenure]")
+            print("Error: Missing arguments!")
+            print("Usage: python loanbanking.py [ID] [Age] [Salary] [ExistingEMI] [CreditScore] [Type] [Amount] [Tenure]")
             sys.exit(1)
         
         customer_id = sys.argv[1]
@@ -25,7 +25,7 @@ def process_loan():
         requested_amount = float(sys.argv[7])
         loan_tenure_months = int(sys.argv[8])
     else:
-        # Fallback to interactive mode if run locally by a human
+        # Fallback to normal interactive prompts for human local runs
         customer_id = input("Enter Customer ID: ")
         age = int(input("Enter Age: "))
         monthly_salary = float(input("Enter Monthly Salary: "))
@@ -96,5 +96,3 @@ def process_loan():
 
 if __name__ == "__main__":
     process_loan()
-
-
